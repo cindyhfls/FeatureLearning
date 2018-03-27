@@ -7,8 +7,8 @@ env.pixwidth = env.resolution.width;
 env.distance = 100; % in cm, monkey from screen
 env.physicalWidth = 30; % in cm, width of the visible screen
 % env.colorDepth = 255;
-env.juicePort = 0; % port for juice
-env.juiceCh = 0; % channel for juice
+% env.juicePort = 0; % port for juice
+% env.juiceCh = 0; % channel for juice
 env.rigID = 'Shadowlands'; %
 env.eyeside = 1;  %1= left 2= right
 

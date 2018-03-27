@@ -1,28 +1,34 @@
 % This part shows the reward presentation.
-% It can be modified to a much simpler version because we don't need to
-% present the 25 cents every whatever reward
 function [thisreward,totalreward]=rewardPresentation(w,trNo,vbl,myinput,setup,coords,totalreward,thischoice)
-
 %specify some parameters for reward display
 thisreward = myinput.inputReward(thischoice, trNo) ; % get the reward according to choice
 if thisreward % if the choice is rewarded
-    feedbackColor = setup.correctFeedback; % visual feedback for correct
+    feedbackColor(thischoice,:) = setup.correctFeedback; % visual feedback for correct
     totalreward = totalreward + 1 ;
 else
-    feedbackColor = setup.wrongFeedback; % visual feedback for wrong
+    feedbackColor(thischoice,:) = setup.wrongFeedback; % visual feedback for wrong
+end
+
+unchosen = setdiff(1:2,thischoice) ;
+if myinput.inputReward(unchosen,trNo)% if the choice is rewarded
+    feedbackColor(unchosen,:) = setup.correctFeedback; % visual feedback for correct
+else
+    feedbackColor(unchosen,:) = setup.wrongFeedback; % visual feedback for wrong
 end
 
 tStart = GetSecs;
 tpresent = tStart ;
 rewardPresentationTemp = setup.rewardPresentationT ;  % how long is the reward feedback duration
+
 if setup.feedbackOn == 0 % visual feedback off
-    feedbackColor = setup.neutralFeedback;
+    feedbackColor = repmat(setup.neutralFeedback,2,1);
 end
 
 while tpresent<tStart+rewardPresentationTemp
 %     drawFixationObj(w,setup.correctFeedback,coords,'dot');
-    Screen('FrameOval', w, feedbackColor, coords.targRectN(thischoice,:), 5);
-    DrawSimpleTargets(w,trNo,myinput,setup,coords);
+    DrawSimpleTargets(w,trNo,myinput,setup,coords,thischoice)
+    Screen('FrameOval', w, feedbackColor(thischoice,:), coords.targRectN(thischoice,:), 5); % feedback circle for correct feedback
+%     Screen('FrameOval', w, feedbackColor(unchosen,:), coords.targRectN(unchosen,:), 5); % feedback circle for correct feedback
     vbl = Screen('Flip', w, vbl + 0.5 * coords.ifi);
     tpresent = vbl ;
 end
@@ -30,8 +36,25 @@ end
 
 if thisreward
     reward_digital_Juicer1(setup.rewardjuiceamount);
-    % to be replaced with real juicer code
 %     fprintf('juicer reward obtained\n'); % print strobe
 end
+
+
+
+% %post-hoc display
+% tStart = GetSecs;
+% tpresent = tStart ;
+% while tpresent<tStart+rewardPresentationTemp/2
+%     vbl = Screen('Flip', w);
+%     tpresent = vbl ;
+% end
+% while tpresent<tStart+rewardPresentationTemp
+% %     drawFixationObj(w,setup.correctFeedback,coords,'dot');
+%     DrawSimpleTargets(w,trNo,myinput,setup,coords);
+%     Screen('FrameOval', w, feedbackColor(thischoice,:), coords.targRectN(thischoice,:), 5); % feedback circle for correct feedback
+%     Screen('FrameOval', w, feedbackColor(unchosen,:), coords.targRectN(unchosen,:), 5); % feedback circle for correct feedback
+%     vbl = Screen('Flip', w, vbl + 0.5 * coords.ifi);
+%     tpresent = vbl ;
+% end
 
 end

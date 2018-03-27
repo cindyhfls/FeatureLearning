@@ -1,6 +1,6 @@
 function a = KeyCapture()
 
-global setup continuing pauseexp
+global setup continuing pauseexp skip
 
 KbName('UnifyKeyNames')
 gokey = KbName('RightArrow');
@@ -9,6 +9,7 @@ pausekey = KbName('P');
 reward=KbName('space');
 lessjuice = KbName('DownArrow');
 morejuice = KbName('UpArrow');
+nexttrial = KbName('N');
 
 [keyIsDown,~,keyCode] = KbCheck;
 if keyCode(stopkey)
@@ -27,8 +28,11 @@ elseif keyCode(lessjuice)
     a = 4;
     setup.rewardjuiceamount = setup.rewardjuiceamount*.8;
 elseif keyCode(morejuice)
-    a= 5;
+    a = 5;
     setup.rewardjuiceamount = setup.rewardjuiceamount*1.2;
+elseif keyCode(nexttrial)
+    a = 6;
+    skip = 1;
 else
     a = 0;
 end

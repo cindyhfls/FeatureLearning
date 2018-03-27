@@ -49,13 +49,16 @@ while rep ~= 0 && continuing ==1 && pauseexp==0 % repeat display after timeout
             vbl = Screen('Flip', w);
             tpresent = vbl ; % get the present time for screen
         end
+        
         if  responseout == 0 % exit while loop by timeout
             rep = rep + 1 ;
         elseif responseout == 1 % exit while loop by responding
             thisresponsetime= GetSecs - tStart ;
             thischoice= whichout; % this line and below are to replace the original keyboard check
             thisrepeat = rep;
+            if ~isnan(thischoice)
             thisbetterchoice = myinput.betterchoice(trNo) == thischoice;
+            end
             rep = 0 ; % return to default to exit while loop
         end
     end

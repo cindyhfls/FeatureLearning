@@ -1,4 +1,4 @@
-function [vbl] = obtain_fixation(w,trNo,setup,coords)
+function [vbl] = obtain_fixation(w,setup,coords)
 global continuing pauseexp
 startTime = GetSecs;
 vbl = startTime;
